@@ -213,9 +213,9 @@ function shiftUpcoming(deltaDays){
 function renderCalendar(){
   // 2-week board: weekStart (Mon) -> 14 days
   const start = state.weekStart || mondayOfWeek(new Date());
-  const end = addDays(start, 13);
+  const end = addDays(start, 6);
 
-  el.monthLabel.textContent = `${fmtDate(start)} — ${fmtDate(end)}`;
+  el.monthLabel.textContent = `Week of ${fmtDate(start)}`;
 
   const todayKey = dateKey(new Date());
   const selectedKey = state.selectedDate ? dateKey(state.selectedDate) : "";
@@ -228,7 +228,7 @@ function renderCalendar(){
   }
 
   const days = [];
-  for(let i=0;i<14;i++){
+  for(let i=0;i<7;i++){
     days.push(addDays(start, i));
   }
 
