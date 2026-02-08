@@ -51,9 +51,7 @@ function uniqSubjects(){
       if (s) set.add(s);
     }
   }
-  const arr = Array.from(set).sort((a,b)=>a.localeCompare(b));
-  if(!arr.includes('OTHER')) arr.push('OTHER');
-  return arr;
+  return Array.from(set).sort((a,b)=>a.localeCompare(b));
 }
 
 const state = {
@@ -169,10 +167,7 @@ function init(){
     el.aDue.value = "";
     el.aDue.dataset.key = "";
     el.pickedInfo.textContent = "";
-    updateDueMode();
   });
-
-  updateDueMode();
 
   // week nav (Upcoming board)
   el.prevMonth.addEventListener("click", () => shiftUpcoming(-7));
@@ -192,10 +187,7 @@ function init(){
   });
 
   // schedule picker events
-  el.pickFromSchedule.addEventListener("click", ()=>{
-    if(el.aSubject.value==="OTHER") openNativeDatePicker();
-    else openSchedulePicker();
-  });
+  el.pickFromSchedule.addEventListener("click", openSchedulePicker);
   el.closeSchedule.addEventListener("click", closeSchedulePicker);
   el.scheduleBackdrop.addEventListener("click", (e)=>{
     if(e.target === el.scheduleBackdrop) closeSchedulePicker();
@@ -310,73 +302,6 @@ function focusDateKey(dk){
 }
 
 // === Assignments list ===
-
-function updateDueMode(){
-  const subject = el.aSubject.value;
-  const isOther = subject === "OTHER";
-
-  if(isOther){
-    el.pickFromSchedule.textContent = "Pick date";
-    el.pickFromSchedule.title = "Pick any due date";
-    el.aDue.placeholder = "Pick a date…";
-    // use native date picker when possible
-    el.aDue.readOnly = true;
-  }else{
-    el.pickFromSchedule.textContent = "Pick";
-    el.pickFromSchedule.title = "Pick from schedule";
-    el.aDue.placeholder = "Pick from schedule...";
-    el.aDue.readOnly = true;
-  }
-}
-
-function openNativeDatePicker(){
-  // Temporarily switch input type to date to use the phone picker
-  const prevType = el.aDue.getAttribute("type") || "text";
-  el.aDue.setAttribute("type","date");
-  // set min today
-  const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth()+1).padStart(2,"0");
-  const d = String(today.getDate()).padStart(2,"0");
-  el.aDue.setAttribute("min", `${y}-${m}-${d}`);
-
-  // If browser supports showPicker (Chrome), use it
-  try{
-    if(el.aDue.showPicker) el.aDue.showPicker();
-    else el.aDue.focus();
-  }catch(_){
-    el.aDue.focus();
-  }
-
-  const onChange = ()=>{
-    const dk = el.aDue.value; // yyyy-mm-dd
-    if(dk){
-      el.aDue.dataset.key = dk;
-      const [yy,mm,dd] = dk.split("-").map(Number);
-      const dt = new Date(yy, mm-1, dd);
-      // switch back to text for nice formatting
-      el.aDue.setAttribute("type", prevType);
-      el.aDue.value = fmtDate(dt);
-      el.pickedInfo.textContent = `Picked: manual • ${dk}`;
-    }else{
-      el.aDue.setAttribute("type", prevType);
-    }
-    el.aDue.removeEventListener("change", onChange);
-    el.aDue.removeEventListener("blur", onBlur);
-  };
-
-  const onBlur = ()=>{
-    // if user cancels, revert type
-    if(!el.aDue.value || !/^\d{4}-\d{2}-\d{2}$/.test(el.aDue.value)){
-      el.aDue.setAttribute("type", prevType);
-    }
-    el.aDue.removeEventListener("change", onChange);
-    el.aDue.removeEventListener("blur", onBlur);
-  };
-
-  el.aDue.addEventListener("change", onChange);
-  el.aDue.addEventListener("blur", onBlur);
-}
 function renderAssignments(){
   const now = startOfDay(new Date());
   const selected = state.selectedDate ? dateKey(state.selectedDate) : null;
@@ -476,7 +401,6 @@ function openAddModal(){
   el.aDue.dataset.key = "";
   el.pickedInfo.textContent = "";
 
-  updateDueMode();
   el.modalBackdrop.classList.remove("hidden");
   setTimeout(()=> el.aTitle.focus(), 0);
 }
@@ -498,7 +422,6 @@ function openEditModal(id){
   el.aDue.value = fmtDate(new Date(a.dueKey+"T00:00:00"));
   el.pickedInfo.textContent = `Picked: ${a.pickedFrom || "manual"}`;
 
-  updateDueMode();
   el.modalBackdrop.classList.remove("hidden");
 }
 
@@ -578,20 +501,12 @@ function openSchedulePicker(){
   }
   el.scheduleSubjectName.textContent = subject;
 
-  // base week logic
-  let base;
+  // base week: week containing the selected day (or today)
+  let base = state.selectedDate ? state.selectedDate : new Date();
 
-  if(state.selectedDate){
-    base = state.selectedDate;
-  }else{
-    base = new Date();
-  }
-
-  const today = new Date();
-  const dow = base.getDay(); // Sun=0, Sat=6
-
-  // If it's weekend (Sat/Sun), always jump to NEXT week
-  if(dow === 0 || dow === 6){
+  // if it's weekend (Sat/Sun), jump the picker to *next* week automatically
+  const dow = base.getDay(); // Sun=0 .. Sat=6
+  if(dow===0 || dow===6){
     base = addDays(base, 7);
   }
 

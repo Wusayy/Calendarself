@@ -649,45 +649,21 @@ body{
 }
 
 
-/* Select (subject dropdown) — keep it in the palette */
-select.input{
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding-right: 44px;
-  background-image:
-    linear-gradient(45deg, transparent 50%, rgba(243,239,230,0.9) 50%),
-    linear-gradient(135deg, rgba(243,239,230,0.9) 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 12px) calc(50% - 3px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
-}
-
-select.input option{
-  background: #2b2d18;
-  color: #f3efe6;
-}
-
-select.input:disabled{
-  opacity: 0.55;
-}
-
-
-/* === Phone friendly === */
+/* === Phone friendly (clean + readable) === */
 @media (max-width: 760px){
+  .app{ width: 96vw; padding: 16px 8px 40px; }
+
   .topbar{
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    margin-bottom: 14px;
   }
-  .brand{
-    justify-content: space-between;
-  }
-  .actions{
-    justify-content: stretch;
-  }
+  .brand{ justify-content: flex-start; gap: 12px; }
+  .brand-text .title{ font-size: 18px; }
+  .brand-text .subtitle{ font-size: 12px; }
+
+  .actions{ justify-content: stretch; }
   .actions .btn{
     width: 100%;
     padding: 12px 14px;
@@ -698,43 +674,73 @@ select.input:disabled{
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
+    padding: 16px 14px 10px;
   }
   .cal-nav{
-    justify-content: space-between;
+    display:grid;
+    grid-template-columns: 52px 1fr 52px;
+    align-items:center;
+    gap: 10px;
   }
   .month-label{
     width: 100%;
     text-align:center;
+    padding: 10px 12px;
+    border-radius: 18px;
   }
 
-  /* Upcoming board: swipe horizontally (keeps 7 columns readable) */
+  /* Upcoming board: stacked (NO horizontal scroll, no tiny boxes) */
   .upcoming{
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 18px;
+    padding: 10px 12px 14px;
+    overflow: visible;
   }
   .up-grid{
-    min-width: 1080px;
+    min-width: 0 !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .up-cell{
+    min-height: 128px;
+    border-radius: 22px;
+    padding: 12px 12px 10px;
+  }
+  .up-top{ margin-bottom: 10px; }
+  .up-dow{ font-size: 12px; }
+  .up-date{ font-size: 12px; }
+
+  .chip{
+    padding: 10px 10px;
+    border-radius: 14px;
+    font-size: 13px;
   }
 
-  /* Bigger tap targets */
-  .icon-btn{ width: 46px; height: 46px; border-radius: 18px; }
-  .small-btn{ width: 48px; height: 48px; border-radius: 18px; }
+  /* Assignments: comfy spacing */
+  .assignment-list{ padding: 10px 12px 14px; gap: 12px; }
+  .assignment{
+    border-radius: 22px;
+    padding: 14px 12px 12px;
+    gap: 12px;
+  }
+  .badge{ height: 54px; }
+  .a-title{ font-size: 15px; }
+  .tag{ padding: 7px 10px; }
 
-  /* Modal becomes near full-screen */
-  .modal{
+  /* Bigger tap targets */
+  .icon-btn{ width: 52px; height: 52px; border-radius: 18px; }
+  .small-btn{ width: 52px; height: 52px; border-radius: 18px; }
+
+  /* Modal: near full-screen */
+  .backdrop{ padding: 10px; }
+  .modal, .modal-wide{
     width: 100%;
     max-height: 92vh;
     overflow: auto;
     border-radius: 22px;
   }
-  .modal-wide{
-    width: 100%;
-    max-height: 92vh;
-    overflow: auto;
-  }
+  .modal-body{ padding: 12px 14px 6px; }
+  .modal-footer{ padding: 14px 14px 14px; }
+  .form-row.two{ grid-template-columns: 1fr; }
 
-  .form-row.two{
-    grid-template-columns: 1fr;
-  }
+  /* Timetable can scroll horizontally */
+  .schedule-grid-wrap{ max-height: 62vh; }
 }
