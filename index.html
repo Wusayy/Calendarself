@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School Remind Me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">⧗</div>
+        <div class="brand-text">
+          <div class="title">School Remind Me</div>
+          <div class="subtitle">Your comfy assignment tracker</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="addBtn" class="btn btn-primary">+ Add assignment</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card calendar-card">
+        <div class="card-header">
+          <div class="card-title">Upcoming</div>
+          <div class="cal-nav">
+            <button class="icon-btn" id="prevMonth" aria-label="Previous month">◀</button>
+            <div id="monthLabel" class="month-label">This & next week</div>
+            <button class="icon-btn" id="nextMonth" aria-label="Next month">▶</button>
+          </div>
+        </div>
+
+        <div class="upcoming">
+          <div class="up-grid" id="calGrid"></div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-left">
+            <span class="pill pill-today">Today</span>
+            <span class="pill pill-selected">Selected</span>
+            <span class="pill pill-has">Has assignments</span>
+          </div>
+          <div class="legend-right">
+            <span class="hint">Tip: click a date to focus the list below.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card list-card">
+        <div class="card-header">
+          <div class="card-title">Assignments</div>
+          <div class="card-subtitle" id="focusLabel">Showing: all upcoming</div>
+        </div>
+
+        <div id="emptyState" class="empty">
+          <div class="empty-emoji">✦</div>
+          <div class="empty-title">No assignments yet</div>
+          <div class="empty-text">Hit <b>“Add assignment”</b> and pick a subject + due date from your timetable.</div>
+        </div>
+
+        <div id="assignmentList" class="assignment-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div id="modalBackdrop" class="backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Add assignment</div>
+        <button class="icon-btn" id="closeModal" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="label" for="aTitle">Assignment</label>
+          <input id="aTitle" class="input" placeholder="e.g., Unit 8 worksheet" maxlength="80"/>
+        </div>
+
+        <div class="form-row two">
+          <div>
+            <label class="label" for="aSubject">Subject</label>
+            <select id="aSubject" class="input"></select>
+          </div>
+          <div>
+            <label class="label" for="aDue">Due</label>
+            <div class="due-row">
+              <input id="aDue" class="input" placeholder="Pick from schedule..." readonly />
+              <button class="btn btn-soft" id="pickFromSchedule">Pick</button>
+            </div>
+            <div class="mini-help">You’ll pick a class block from the timetable popup.</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="label" for="aNotes">Notes (optional)</label>
+          <textarea id="aNotes" class="input textarea" placeholder="Anything you wanna remember?"></textarea>
+        </div>
+
+        <div class="form-row two">
+          <div class="toggle-row">
+            <input type="checkbox" id="aPinned" />
+            <label for="aPinned">Pin to top</label>
+          </div>
+          <div class="right mini-help" id="pickedInfo"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="deleteBtn" class="btn btn-danger hidden">Delete</button>
+        <div class="spacer"></div>
+        <button id="cancelBtn" class="btn btn-soft">Cancel</button>
+        <button id="saveBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Picker -->
+  <div id="scheduleBackdrop" class="backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <div class="modal-title">Pick due date from your schedule</div>
+        <button class="icon-btn" id="closeSchedule" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="schedule-top">
+          <div class="schedule-info">
+            <div class="schedule-week" id="weekLabel">Week of …</div>
+            <div class="schedule-help">
+              Only <b id="scheduleSubjectName">subject</b> is clickable — everything else is greyed out.
+            </div>
+          </div>
+          <div class="schedule-nav">
+            <button class="btn btn-soft" id="prevWeek">◀ Week</button>
+            <button class="btn btn-soft" id="thisWeek">This week</button>
+            <button class="btn btn-soft" id="nextWeek">Week ▶</button>
+          </div>
+        </div>
+
+        <div class="schedule-grid-wrap">
+          <div class="schedule-grid" id="scheduleGrid"></div>
+        </div>
+
+        <div class="schedule-foot">
+          <div class="mini-help">
+            Click any colored block to set the due date to that day.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
