@@ -11,11 +11,11 @@ const SCHEDULE = {
   // For display only (roughly matching your screenshot)
   slots: [
     { label: "8:00–8:45",    byDay: { Mon:"MAT", Tue:"SJL", Wed:"ANJ", Thu:"TSV", Fri:"OBP" } },
-    { label: "8:50–9:35",    byDay: { Mon:"OBN", Tue:"MAT", Wed:"NEJ", Thu:"IAP", Fri:"OBP" } },
-    { label: "9:45–10:30",   byDay: { Mon:"PBE", Tue:"ODP", Wed:"PBE", Thu:"ANJ", Fri:"TEM" } },
+    { label: "8:50–9:35",    byDay: { Mon:"OBN", Tue:"MAT", Wed:"ANJ", Thu:"INP", Fri:"OBP" } },
+    { label: "9:45–10:30",   byDay: { Mon:"PBE", Tue:"ODP", Wed:"NEJ", Thu:"INP", Fri:"TEM" } },
     { label: "10:50–11:35",  byDay: { Mon:"ANJ", Tue:"ODP", Wed:"PBE", Thu:"ANJ", Fri:"TEM" } },
     { label: "11:40–12:25",  byDay: { Mon:"LIN", Tue:"ODP", Wed:"DDW", Thu:"SJL", Fri:"NEJ" } },
-    { label: "12:35–1:20",   byDay: { Mon:"LIN", Tue:"OBP", Wed:"DDW", Thu:"SJL", Fri:"NEJ" } },
+    { label: "12:35–1:20",   byDay: { Mon:"LIN", Tue:"OBP", Wed:"DDW", Thu:"SJL", Fri:"" } },
     { label: "1:30–2:15",    byDay: { Mon:"LIN", Tue:"OBP", Wed:"DDW", Thu:"",    Fri:""    } },
   ]
 };
